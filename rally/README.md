@@ -1,9 +1,10 @@
 ### Installting Rally
-`# sudo yum -y install git which`  
-`# git clone https://github.com/openstack/rally.git`   
-`# cd rally/etc/rally  `  
-`# sudo ./install_rally.sh`   
- 
+```
+# sudo yum -y install git which 
+# git clone https://github.com/openstack/rally.git   
+# cd rally/etc/rally    
+# sudo ./install_rally.sh   
+ ```
 ### Create a Deployment
 `# rally deployment create --fromenv --name=existing`  
 ** You can create one from a file **    
