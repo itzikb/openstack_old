@@ -1,10 +1,14 @@
 ### Installting Rally
 ```
-# sudo yum -y install git which 
+# sudo yum -y groupinstall 'Development Tools'
+# sudo yum -y libffi-devel python-devel openssl-devel gmp-devel libxml2-devel libxslt-devel postgresql-devel python-pip
 # git clone https://github.com/openstack/rally.git   
 # cd rally/etc/rally    
-# sudo ./install_rally.sh   
+# ./install_rally.sh   
  ```
+### Running from VirualEnv
+`. rally/bin/activate`
+
 ### Create a Deployment
 `# rally deployment create --fromenv --name=existing`  
 ** You can create one from a file **    
