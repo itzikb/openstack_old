@@ -12,10 +12,13 @@
      - login_tenant_name: admin
      - tenant_name: admin
      - external_network: public
+     - internal_network: net1
+     - internal_subnet: net1subnet
+     - router: router1
   tasks:
      - name: Create an internal network 
        quantum_network: 
-           name=net1
+           name="{{ internal_network }}"
            state=present
            tenant_name="{{ tenant_name }}"
            login_username="{{ login_username }}"
@@ -29,20 +32,17 @@
            login_username="{{ login_username }}"
            login_password="{{ login_password }}"
            login_tenant_name="{{ login_tenant_name }}"
-           network_name=net1 
-           name=net1subnet 
+           network_name="{{ internal_network }}"
+           name="{{ internal_subnet }}"
            cidr=192.168.100.0/24
  
-     - name: debug subnetid
-       debug: var="{{ net1subnet.id }}"
-
      - name: Creating a router
        quantum_router: state=present
            tenant_name="{{ tenant_name }}"
            login_username="{{ login_username }}"
            login_password="{{ login_password }}"
            login_tenant_name="{{ login_tenant_name }}"
-           name=router1
+           name="{{ router }}"
 
      - name: Attaching an interface to the router
        quantum_router_interface:
@@ -50,8 +50,8 @@
            login_username="{{ login_username }}"
            login_password="{{ login_password }}"
            login_tenant_name="{{ login_tenant_name }}"
-           router_name=router1
-           subnet_name=net1subnet
+           router_name="{{ router }}"
+           subnet_name="{{ internal_subnet }}"
 
      - name: Setting a router's gateway
        quantum_router_gateway:
@@ -59,6 +59,6 @@
            login_username="{{ login_username }}"
            login_password="{{ login_password }}"
            login_tenant_name="{{ login_tenant_name }}"
-           router_name=router1
-           network_name=public
+           router_name="{{ router }}"
+           network_name="{{ external_network }}"
            
