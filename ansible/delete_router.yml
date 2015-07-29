@@ -11,6 +11,7 @@
      - router: router1
      - internal_network: net1
      - internal_subnet: net1subnet
+     - external_network: public
   tasks:
      - name: Clearing a router's gateway
        quantum_router_gateway:
@@ -19,6 +20,7 @@
            login_password="{{ login_password }}"
            login_tenant_name="{{ login_tenant_name }}"
            router_name="{{ router }}"
+           network_name="{{ external_network }}"
 
      - name: Detaching an interface from the router
        quantum_router_interface:
@@ -41,7 +43,7 @@
 
      - name: Delete an internal network 
        quantum_network: 
-           name="{{ interl_network }}"
+           name="{{ internal_network }}"
            state=absent
            tenant_name="{{ tenant_name }}"
            login_username="{{ login_username }}"
