@@ -1,0 +1,49 @@
+---
+- name: Delete a router and an internal network
+  hosts: controller
+  gather_facts: no
+  sudo: yes
+  vars:
+     - login_username: admin
+     - login_password: password
+     - login_tenant_name: admin
+     - tenant_name: admin
+     - router: router1
+     - internal_network: net1
+     - internal_subnet: net1subnet
+  tasks:
+     - name: Clearing a router's gateway
+       quantum_router_gateway:
+           state=absent
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
+           router_name="{{ router }}"
+
+     - name: Detaching an interface from the router
+       quantum_router_interface:
+           state=absent
+           tenant_name="{{ tenant_name }}"
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
+           router_name="{{ router }}"
+           subnet_name="{{ internal_subnet }}"
+
+     - name: Deleting a router
+       quantum_router: 
+           state=absent
+           tenant_name="{{ tenant_name }}"
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
+           name="{{ router }}"
+
+     - name: Delete an internal network 
+       quantum_network: 
+           name="{{ interl_network }}"
+           state=absent
+           tenant_name="{{ tenant_name }}"
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
