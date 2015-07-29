@@ -1,0 +1,64 @@
+---
+####################################################
+# Setup and internal network and a router          #
+####################################################
+- name: Setup an internal network and and a router 
+  hosts: controller
+  gather_facts: no
+  sudo: yes
+  vars:
+     - login_username: admin
+     - login_password: password
+     - login_tenant_name: admin
+     - tenant_name: admin
+     - external_network: public
+  tasks:
+     - name: Create an internal network 
+       quantum_network: 
+           name=net1
+           state=present
+           tenant_name="{{ tenant_name }}"
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
+
+     - name: Creating a subnet for the internal network
+       quantum_subnet: 
+           state=present
+           tenant_name="{{ tenant_name }}"
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
+           network_name=net1 
+           name=net1subnet 
+           cidr=192.168.100.0/24
+ 
+     - name: debug subnetid
+       debug: var="{{ net1subnet.id }}"
+
+     - name: Creating a router
+       quantum_router: state=present
+           tenant_name="{{ tenant_name }}"
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
+           name=router1
+
+     - name: Attaching an interface to the router
+       quantum_router_interface:
+           tenant_name="{{ tenant_name }}"
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
+           router_name=router1
+           subnet_name=net1subnet
+
+     - name: Setting a router's gateway
+       quantum_router_gateway:
+           state=present 
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
+           router_name=router1
+           network_name=public
+           
