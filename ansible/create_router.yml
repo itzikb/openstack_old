@@ -1,7 +1,7 @@
 ---
-####################################################
-# Setup and internal network and a router          #
-####################################################
+#####################################################
+# Setup internal and external networks and a router #
+#####################################################
 - name: Setup an internal network and and a router 
   hosts: controller
   gather_facts: no
@@ -16,6 +16,33 @@
      - internal_subnet: net1subnet
      - router: router1
   tasks:
+     - name: Create external network - neutron
+       quantum_network:
+           state: present
+           login_username: "{{ login_username }}"
+           login_password: "{{ login_password }}"
+           login_tenant_name: "{{ login_tenant_name }}"
+           name: public
+           provider_network_type: vlan
+           provider_physical_network: myphysnet
+           provider_segmentation_id: 190
+           router_external: yes
+
+     - name: Create subnet for external network - neutron
+       quantum_subnet:
+           state: present
+           login_username: "{{ login_username }}"
+           login_password: "{{ login_password }}"
+           login_tenant_name: "{{ login_tenant_name }}"
+           tenant_name: "{{ tenant_name }}"
+           network_name: public
+           name: external-subnet
+           enable_dhcp: False
+           gateway_ip: "{{ external_gw }}"
+           cidr: "{{ external_cide }}"
+           allocation_pool_start: "{{ external_allocation_pool_start }}"
+           allocation_pool_end: "{{ allocation_pool_end }}"
+
      - name: Create an internal network 
        quantum_network: 
            name="{{ internal_network }}"
@@ -61,4 +88,3 @@
            login_tenant_name="{{ login_tenant_name }}"
            router_name="{{ router }}"
            network_name="{{ external_network }}"
-           
