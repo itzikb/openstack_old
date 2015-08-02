@@ -1,0 +1,22 @@
+######################################
+# Upload images to an existing cloud #
+######################################
+- name: Upload images 
+  hosts: controller
+  gather_facts: no
+  sudo: yes
+  vars:
+     - login_username: admin
+     - login_password: password
+     - login_tenant_name: admin
+  tasks:
+     - name: Upload cirros image
+       glance_image: 
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
+           name=cirros
+           container_format=bare
+           disk_format=qcow2
+           state=present
+           copy_from=http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
