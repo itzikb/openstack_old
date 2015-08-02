@@ -49,3 +49,12 @@
            login_username="{{ login_username }}"
            login_password="{{ login_password }}"
            login_tenant_name="{{ login_tenant_name }}"
+
+     - name: Delete an external network
+       quantum_network: 
+           name="{{ external_network }}"
+           state=absent
+           tenant_name="{{ tenant_name }}"
+           login_username="{{ login_username }}"
+           login_password="{{ login_password }}"
+           login_tenant_name="{{ login_tenant_name }}"
