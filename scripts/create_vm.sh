@@ -36,7 +36,7 @@ neutron subnet-create --name subnet1 net1 192.168.99.0/24
 neutron router-interface-add router1 subnet1
 
 # Create a floating IP
-FIP=(neutron floatingip-create public | grep floating_ip_address |awk '{print $4}')
+FIP=$(neutron floatingip-create public | grep floating_ip_address |awk '{print $4}')
 
 # Launch an instance and associate a Floating IP to the instance
 nova boot --flavor m1.micro --image cirros --nic net-id=$NET1 vm1
