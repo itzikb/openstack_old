@@ -17,7 +17,7 @@ admin_secgroup=$(openstack  security group list --project=admin | grep default |
 openstack security group rule create $admin_secgroup --protocol icmp --ingress
 openstack security group rule create $admin_secgroup --protocol icmp --egress
 openstack security group rule create $admin_secgroup --protocol tcp --dst-port 22 --ingress
-openstack security group rule create $admin_secgroup --protocol tcp --dst-port 22 --eggress
+openstack security group rule create $admin_secgroup --protocol tcp --dst-port 22 --egress
 
 # Create an external network and a subnet
 neutron net-create public --provider:physical_network datacentre --provider:network_type flat --router:external=True
