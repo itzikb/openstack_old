@@ -12,7 +12,7 @@ openstack image create --disk-format qcow2 --file cirros-0.3.4-x86_64-disk.img -
 openstack flavor create --ram 128 --vcpus 1 --public m1.micro
 
 # Open security group rules for ICMP and SSH
-openstack  security group list --project=admin
+openstack security group list --project=admin
 admin_secgroup=$(openstack  security group list --project=admin | grep default | awk '{print $2}')
 openstack security group rule create $admin_secgroup --protocol icmp --ingress
 openstack security group rule create $admin_secgroup --protocol icmp --egress
@@ -36,11 +36,13 @@ neutron subnet-create --name subnet1 net1 192.168.99.0/24
 neutron router-interface-add router1 subnet1
 
 # Create a floating IP
-FIP=$(neutron floatingip-create public | grep floating_ip_address |awk '{print $4}')
+export FIP=$(neutron floatingip-create public | grep floating_ip_address |awk '{print $4}')
 
 # Launch an instance and associate a Floating IP to the instance
 nova boot --flavor m1.micro --image cirros --nic net-id=$NET1 vm1
+sleep 120
 nova floating-ip-associate vm1 $FIP
+
 
 # Check connectivity
 ping -c 30 $FIP
