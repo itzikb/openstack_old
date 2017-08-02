@@ -1,9 +1,4 @@
 #!/bin/bash
-#######################################################################################
-# Create all the resources required to boot and instance and boot and instance        #
-# Assuming you have a TripleO environment in place and you run in from the undercloud #
-# Also it's assumed that you have a Flat physical network named datacentre            #
-#######################################################################################
 source overcloudrc
 
 # Create a cirros Image
@@ -38,10 +33,9 @@ neutron router-interface-add router1 subnet1
 FIP=$(neutron floatingip-create public | grep floating_ip_address |awk '{print $4}')
 
 # Launch an instance and associate a Floating IP to the instance
-nova boot --flavor m1.micro --image cirros --nic net-id=$NET1 vm1
-sleep 120
-nova floating-ip-associate vm1 $FIP
-
+openstack server create --flavor m1.micro --image cirros --nic net-id=$NET1 vm1
+sleep 30
+openstack server add floating ip vm1 $FIP
 
 # Check connectivity
 ping -c 30 $FIP
