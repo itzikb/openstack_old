@@ -2,7 +2,7 @@
 source overcloudrc
 
 # Create a cirros Image
-wget http://download.cirros-cloud.net/0.3.5/cirros-0.3.5-x86_64-disk.img
+wget -4 http://download.cirros-cloud.net/0.3.5/cirros-0.3.5-x86_64-disk.img
 openstack image create --disk-format qcow2 --file cirros-0.3.5-x86_64-disk.img --public cirros
 openstack flavor create --ram 128 --vcpus 1 --public m1.micro
 
